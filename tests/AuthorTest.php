@@ -101,19 +101,20 @@
             //Arrange
             $name = "Lovecraft";
             $id = 1;
+            $copy = 1;
             $test_author = new Author($name, $id);
             $test_author->save();
 
             $title = "Cthulhus Big Adventure";
             $id2 = 2;
             $genre = "romance";
-            $test_book = new Book($title, $genre, $id2);
+            $test_book = new Book($title, $genre, $id2, $copy);
             $test_book->save();
 
             $title2 = "The Necromicon";
             $id3 = 3;
             $genre2 = "horror";
-            $test_book2 = new Book($title2, $genre2, $id3);
+            $test_book2 = new Book($title2, $genre2, $id3, $copy);
             $test_book2->save();
 
             //Act

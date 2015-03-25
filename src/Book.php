@@ -44,7 +44,7 @@
 
         function setId($new_id)
         {
-            $this->id = (string) $new_id;
+            $this->id = (int) $new_id;
         }
 
     //DB FUNCTIONS
@@ -94,6 +94,7 @@
         function deleteBook()
         {
             $GLOBALS['DB']->exec("DELETE FROM books WHERE id = {$this->getId()};");
+            $GLOBALS['DB']->exec("DELETE FROM copies WHERE book_id = {$this->getId()};");
         }
 
     //UPDATE FUNCTIONS

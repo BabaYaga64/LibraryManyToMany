@@ -111,10 +111,10 @@
             $id = null;
             $genre = '2016-01-01';
             $test_book = new Book($title, $genre, $id);
+
             $title2 = "Hamlet";
             $id2 = null;
             $genre2 = '2017-01-01';
-
             $test_book2 = new Book($title2, $genre2, $id2);
 
             //Act
@@ -132,10 +132,12 @@
             $title = "Great Gatsby";
             $id = null;
             $genre = '2016-01-01';
+
             $test_book = new Book($title, $genre, $id);
             $title2 = "Hamlet";
             $id2 = null;
             $genre2 = '2017-01-01';
+
             $test_book2 = new Book($title2, $genre2, $id2);
             $test_book->save();
             $test_book2->save();
@@ -155,6 +157,7 @@
             $title = "Great Gatsby";
             $id = null;
             $genre = '2016-01-01';
+
             $test_book = new Book($title, $genre, $id);
             $test_book->save();
             $new_title = "Frankenstein";
@@ -173,6 +176,7 @@
             $title = "Great Gatsby";
             $id = null;
             $genre = '2016-01-01';
+
             $test_book = new Book($title, $genre, $id);
             $test_book->save();
             $new_genre = '2054-12-12';
@@ -191,12 +195,14 @@
             $title = "Great Gatsby";
             $id = null;
             $genre = '2016-01-01';
+
             $test_book = new Book($title, $genre, $id);
             $test_book->save();
 
             $title2 = "Love in the Time of Cholera";
             $id2 = null;
             $genre2 = '2016-01-01';
+
             $test_book2 = new Book($title2, $genre2, $id2);
             $test_book2->save();
 
@@ -216,6 +222,7 @@
             $id = 1;
             $title2 = "Stonehenge: A Study of Rocks";
             $id2 = 2;
+
             $genre = '2016-01-01';
             $genre2 = '2016-01-01';
 
@@ -236,6 +243,7 @@
             $title = "Light in August";
             $genre = "Southern Gothic";
             $id = 1;
+
             $test_book = new Book($title, $genre, $id);
             $test_book->save();
 
