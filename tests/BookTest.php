@@ -147,7 +147,41 @@
             $this->assertEquals([], $result);
         }
 
+        function test_updateTitle()
+        {
+            //Arrange
+            $title = "Great Gatsby";
+            $id = null;
+            $duedate = '2016-01-01';
+            $test_book = new Book($title, $duedate, $id);
+            $test_book->save();
+            $new_title = "Frankenstein";
 
+            //Act
+            $test_book->updateTitle($new_title);
+
+            //Assert
+            $this->assertEquals($test_book->getTitle(), $new_title);
+
+        }
+
+        function test_updateDueDate()
+        {
+            //Arrange
+            $title = "Great Gatsby";
+            $id = null;
+            $duedate = '2016-01-01';
+            $test_book = new Book($title, $duedate, $id);
+            $test_book->save();
+            $new_date = '2054-12-12';
+
+            //Act
+            $test_book->updateDueDate($new_date);
+
+            //Assert
+            $this->assertEquals($test_book->getDueDate(), $new_date);
+
+        }
     }
 
 

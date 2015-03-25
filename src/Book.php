@@ -76,6 +76,18 @@
             $GLOBALS['DB']->exec("DELETE FROM books *;");
         }
 
+        function updateTitle($new_title)
+        {
+            $GLOBALS['DB']->exec("UPDATE books SET title = '{$new_title}' WHERE id = {$this->getId()};");
+            $this->setTitle($new_title);
+        }
+
+        function updateDueDate($new_date)
+        {
+            $GLOBALS['DB']->exec("UPDATE books SET duedate = '{$new_date}' WHERE id = {$this->getId()};");
+            $this->setDueDate($new_date);
+        }
+
     }
 
 
