@@ -110,6 +110,31 @@
             $this->setGenre($new_genre);
         }
 
+    //JOIN AUTHORS TO BOOKS
+
+        function addAuthor($author)
+        {
+            $GLOBALS['DB']->exec("INSERT INTO books_authors (book_id, author_id) VALUES ({$this->getId()}, {$author->getId()});");
+        }
+
+        function getAuthors()
+        {
+            $query = $GLOBALS['DB']->query("SELECT authors.* FROM
+                books JOIN books_authors ON (books.id = books_authors.book_id)
+                      JOIN authors ON (books_authors.author_id = authors.id)
+                      WHERE books.id = {$this->getId()};");
+            $author_ids = $query->fetchAll(PDO::FETCH_ASSOC);
+
+            $authors = array();
+            foreach ($author_ids as $author) {
+                $name = $author['name'];
+                $id = $author['id'];
+                $new_author = new Author($name, $id);
+                array_push($authors, $new_author);
+            }
+            return $authors;
+        }
+
     }
 
 

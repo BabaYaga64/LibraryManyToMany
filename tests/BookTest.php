@@ -229,6 +229,36 @@
             $this->assertEquals($test_book, $result);
         }
 
+        function test_getAuthors()
+        {
+
+            //Arrange
+            $title = "Light in August";
+            $genre = "Southern Gothic";
+            $id = 1;
+            $test_book = new Book($title, $genre, $id);
+            $test_book->save();
+
+            $name = "Faulkner";
+            $id2 = 2;
+            $test_author = new Author($name, $id2);
+            $test_author->save();
+
+            $name2 = "Connor";
+            $id3 = 3;
+            $test_author2 = new Author($name2, $id3);
+            $test_author2->save();
+
+            //Act
+            $test_book->addAuthor($test_author);
+            $test_book->addAuthor($test_author2);
+
+            //Assert
+            $result = $test_book->getAuthors();
+            $this->assertEquals([$test_author, $test_author2], $result);
+
+        }
+
 
     }
 

@@ -36,7 +36,7 @@
     //DB FUNCTIONS
         function save()
         {
-            $statement = $GLOBALS['DB']->query("INSERT INTO authors (name) VALUES '{$this->getName()}';");
+            $statement = $GLOBALS['DB']->query("INSERT INTO authors (name) VALUES ('{$this->getName()}') RETURNING id;");
             $result = $statement->fetch(PDO::FETCH_ASSOC);
             $this->setId($result['id']);
         }
@@ -70,10 +70,36 @@
 
         static function deleteAll()
         {
-            $GLOBALS['DB']->exec("DELETE FROM authors *;")
+            $GLOBALS['DB']->exec("DELETE FROM authors *;");
+        }
+
+    //JOIN BOOKS TO AUTHORS
+        function addBook($book)
+        {
+            $GLOBALS['DB']->exec("INSERT INTO books_authors (book_id, author_id) VALUES ({$book->getId()}, {$this->getId()});");
+        }
+
+        function getBooks()
+        {
+            $query = $GLOBALS['DB']->query("SELECT books.* FROM
+                authors JOIN books_authors ON (authors.id = books_authors.author_id)
+                        JOIN books ON (books_authors.book_id = books.id)
+                        WHERE authors.id = {$this->getId()};");
+            $book_ids = $query->fetchAll(PDO::FETCH_ASSOC);
+
+            $books = array();
+            foreach ($book_ids as $book) {
+                $title = $book['title'];
+                $genre = $book['genre'];
+                $id = $book['id'];
+                $new_book = new Book($title, $genre, $id);
+                array_push($books, $new_book);
+            }
+            return $books;
         }
 
     }
+
 
 
 
