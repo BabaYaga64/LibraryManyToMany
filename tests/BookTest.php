@@ -11,6 +11,11 @@
 
     class BookTest extends PHPUnit_Framework_TestCase
     {
+        protected function tearDown()
+        {
+            Book::deleteAll();
+        }
+
         function testGetTitle()
         {
 
@@ -80,7 +85,67 @@
             $this->assertEquals(2, $result);
         }
 
+        // save / getall / deleteall tests
+        function test_save()
+        {
+            //Arrange
+            $title = "Great Gatsby";
+            $id = null;
+            $duedate = '2016-01-01';
+            $test_book = new Book($title, $duedate, $id);
 
+            //Act
+            $test_book->save();
+            $result = Book::getAll();
+
+            //Assert
+            $this->assertEquals([$test_book], $result);
+        }
+
+        function test_getAll()
+        {
+            //Arrange
+            $title = "Great Gatsby";
+            $id = null;
+            $duedate = '2016-01-01';
+            $test_book = new Book($title, $duedate, $id);
+            $title2 = "Hamlet";
+            $id2 = null;
+            $duedate2 = '2017-01-01';
+
+            $test_book2 = new Book($title2, $duedate2, $id2);
+
+            //Act
+            $test_book->save();
+            $test_book2->save();
+            $result = Book::getAll();
+
+            //Assert
+            $this->assertEquals([$test_book, $test_book2], $result);
+        }
+
+        function test_deleteAll()
+        {
+            //Arrange
+            $title = "Great Gatsby";
+            $id = null;
+            $duedate = '2016-01-01';
+            $test_book = new Book($title, $duedate, $id);
+            $title2 = "Hamlet";
+            $id2 = null;
+            $duedate2 = '2017-01-01';
+            $test_book2 = new Book($title2, $duedate2, $id2);
+            $test_book->save();
+            $test_book2->save();
+
+
+            //Act
+            Book::deleteAll();
+            $result = Book::getAll();
+
+            //Assert
+            $this->assertEquals([], $result);
+        }
 
 
     }
