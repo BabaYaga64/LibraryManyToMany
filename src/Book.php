@@ -56,6 +56,19 @@
             $this->setId($result['id']);
         }
 
+        static function find($search_id)
+        {
+            $found_book = null;
+            $books = Book::getAll();
+            foreach($books as $book) {
+                $book_id = $book->getId();
+                if ($book_id == $search_id) {
+                    $found_book = $book;
+                }
+            }
+            return $found_book;
+        }
+
         static function getAll()
         {
             $returned_books = $GLOBALS['DB']->query("SELECT * FROM books;");
@@ -71,10 +84,19 @@
             return $books;
         }
 
+    //DELETE FUNCTIONS
+
         static function deleteAll()
         {
             $GLOBALS['DB']->exec("DELETE FROM books *;");
         }
+
+        function deleteBook()
+        {
+            $GLOBALS['DB']->exec("DELETE FROM books WHERE id = {$this->getId()};");
+        }
+
+    //UPDATE FUNCTIONS
 
         function updateTitle($new_title)
         {

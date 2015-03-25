@@ -182,6 +182,52 @@
             $this->assertEquals($test_book->getDueDate(), $new_date);
 
         }
+
+        function test_deleteBook()
+        {
+            //Arrange
+            $title = "Great Gatsby";
+            $id = null;
+            $duedate = '2016-01-01';
+            $test_book = new Book($title, $duedate, $id);
+            $test_book->save();
+
+            $title2 = "Love in the Time of Cholera";
+            $id2 = null;
+            $duedate2 = '2016-01-01';
+            $test_book2 = new Book($title2, $duedate2, $id2);
+            $test_book2->save();
+
+            //Act
+            $test_book->deleteBook();
+            $result = Book::getAll();
+
+            //Assert
+            $this->assertEquals([$test_book2], $result);
+        }
+
+        //Finds a specific book from the two that are saved
+        function test_find()
+        {
+            //Assert
+            $title = "Brothers Karamazov";
+            $id = 1;
+            $title2 = "Stonehenge: A Study of Rocks";
+            $id2 = 2;
+            $duedate = '2016-01-01';
+            $duedate2 = '2016-01-01';
+
+            $test_book = new Book($title, $duedate, $id);
+            $test_book->save();
+            $test_book2 = new Book($title2, $duedate2, $id2);
+            $test_book2->save();
+            //Act
+            $result = Book::find($test_book->getId());
+            //Assert
+            $this->assertEquals($test_book, $result);
+        }
+
+
     }
 
 
