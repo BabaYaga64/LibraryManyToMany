@@ -6,6 +6,7 @@
     */
 
     require_once "src/Book.php";
+    require_once "src/Author.php";
 
     $DB = new PDO('pgsql:host=localhost;dbname=library');
 
@@ -14,6 +15,7 @@
         protected function tearDown()
         {
             Book::deleteAll();
+            Author::deleteAll();
         }
 
         function testGetTitle()
@@ -22,8 +24,8 @@
             //Arrange
             $title = "Great Gatsby";
             $id = 1;
-            $duedate = 2016;
-            $test_book = new Book($title, $duedate, $id);
+            $genre = 2016;
+            $test_book = new Book($title, $genre, $id);
 
             //Act
             $result = $test_book->getTitle();
@@ -39,8 +41,8 @@
             //Arrange
             $title = "Great Gatsby";
             $id = 1;
-            $duedate = 2016;
-            $test_book = new Book($title, $duedate, $id);
+            $genre = 2016;
+            $test_book = new Book($title, $genre, $id);
 
             //Act
             $result = $test_book->getId();
@@ -49,17 +51,17 @@
             $this->assertEquals(1, $result);
         }
 
-        function testGetDueDate()
+        function testGetGenre()
         {
 
             //Arrange
             $title = "Great Gatsby";
             $id = 1;
-            $duedate = 2016;
-            $test_book = new Book($title, $duedate, $id);
+            $genre = 2016;
+            $test_book = new Book($title, $genre, $id);
 
             //Act
-            $result = $test_book->getDueDate();
+            $result = $test_book->getGenre();
 
             //Assert
             $this->assertEquals(2016, $result);
@@ -74,8 +76,8 @@
             //Arrange
             $title = "Great Gatsby";
             $id = 1;
-            $duedate = 2016;
-            $test_book = new Book($title, $duedate, $id);
+            $genre = 2016;
+            $test_book = new Book($title, $genre, $id);
 
             //Act
             $test_book->setId(2);
@@ -91,8 +93,8 @@
             //Arrange
             $title = "Great Gatsby";
             $id = null;
-            $duedate = '2016-01-01';
-            $test_book = new Book($title, $duedate, $id);
+            $genre = '2016-01-01';
+            $test_book = new Book($title, $genre, $id);
 
             //Act
             $test_book->save();
@@ -107,13 +109,13 @@
             //Arrange
             $title = "Great Gatsby";
             $id = null;
-            $duedate = '2016-01-01';
-            $test_book = new Book($title, $duedate, $id);
+            $genre = '2016-01-01';
+            $test_book = new Book($title, $genre, $id);
             $title2 = "Hamlet";
             $id2 = null;
-            $duedate2 = '2017-01-01';
+            $genre2 = '2017-01-01';
 
-            $test_book2 = new Book($title2, $duedate2, $id2);
+            $test_book2 = new Book($title2, $genre2, $id2);
 
             //Act
             $test_book->save();
@@ -129,12 +131,12 @@
             //Arrange
             $title = "Great Gatsby";
             $id = null;
-            $duedate = '2016-01-01';
-            $test_book = new Book($title, $duedate, $id);
+            $genre = '2016-01-01';
+            $test_book = new Book($title, $genre, $id);
             $title2 = "Hamlet";
             $id2 = null;
-            $duedate2 = '2017-01-01';
-            $test_book2 = new Book($title2, $duedate2, $id2);
+            $genre2 = '2017-01-01';
+            $test_book2 = new Book($title2, $genre2, $id2);
             $test_book->save();
             $test_book2->save();
 
@@ -152,8 +154,8 @@
             //Arrange
             $title = "Great Gatsby";
             $id = null;
-            $duedate = '2016-01-01';
-            $test_book = new Book($title, $duedate, $id);
+            $genre = '2016-01-01';
+            $test_book = new Book($title, $genre, $id);
             $test_book->save();
             $new_title = "Frankenstein";
 
@@ -170,16 +172,16 @@
             //Arrange
             $title = "Great Gatsby";
             $id = null;
-            $duedate = '2016-01-01';
-            $test_book = new Book($title, $duedate, $id);
+            $genre = '2016-01-01';
+            $test_book = new Book($title, $genre, $id);
             $test_book->save();
-            $new_date = '2054-12-12';
+            $new_genre = '2054-12-12';
 
             //Act
-            $test_book->updateDueDate($new_date);
+            $test_book->updateGenre($new_genre);
 
             //Assert
-            $this->assertEquals($test_book->getDueDate(), $new_date);
+            $this->assertEquals($test_book->getGenre(), $new_genre);
 
         }
 
@@ -188,14 +190,14 @@
             //Arrange
             $title = "Great Gatsby";
             $id = null;
-            $duedate = '2016-01-01';
-            $test_book = new Book($title, $duedate, $id);
+            $genre = '2016-01-01';
+            $test_book = new Book($title, $genre, $id);
             $test_book->save();
 
             $title2 = "Love in the Time of Cholera";
             $id2 = null;
-            $duedate2 = '2016-01-01';
-            $test_book2 = new Book($title2, $duedate2, $id2);
+            $genre2 = '2016-01-01';
+            $test_book2 = new Book($title2, $genre2, $id2);
             $test_book2->save();
 
             //Act
@@ -214,12 +216,12 @@
             $id = 1;
             $title2 = "Stonehenge: A Study of Rocks";
             $id2 = 2;
-            $duedate = '2016-01-01';
-            $duedate2 = '2016-01-01';
+            $genre = '2016-01-01';
+            $genre2 = '2016-01-01';
 
-            $test_book = new Book($title, $duedate, $id);
+            $test_book = new Book($title, $genre, $id);
             $test_book->save();
-            $test_book2 = new Book($title2, $duedate2, $id2);
+            $test_book2 = new Book($title2, $genre2, $id2);
             $test_book2->save();
             //Act
             $result = Book::find($test_book->getId());

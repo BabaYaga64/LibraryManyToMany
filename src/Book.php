@@ -3,13 +3,13 @@
     class Book
     {
         private $title;
-        private $duedate;
+        private $genre;
         private $id;
 
-        function __construct($title, $duedate, $id)
+        function __construct($title, $genre, $id)
         {
             $this->title = $title;
-            $this->duedate = $duedate;
+            $this->genre = $genre;
             $this->id = $id;
         }
 
@@ -20,9 +20,9 @@
             return $this->title;
         }
 
-        function getDueDate()
+        function getGenre()
         {
-            return $this->duedate;
+            return $this->genre;
         }
 
         function getId()
@@ -37,9 +37,9 @@
             $this->title = (string) $new_title;
         }
 
-        function setDueDate($new_duedate)
+        function setGenre($new_genre)
         {
-            $this->duedate = (string) $new_duedate;
+            $this->genre = (string) $new_genre;
         }
 
         function setId($new_id)
@@ -51,7 +51,7 @@
 
         function save()
         {
-            $statement = $GLOBALS['DB']->query("INSERT INTO books (title, duedate) VALUES ('{$this->getTitle()}', '{$this->getDueDate()}') RETURNING id;");
+            $statement = $GLOBALS['DB']->query("INSERT INTO books (title, genre) VALUES ('{$this->getTitle()}', '{$this->getGenre()}') RETURNING id;");
             $result = $statement->fetch(PDO::FETCH_ASSOC);
             $this->setId($result['id']);
         }
@@ -77,8 +77,8 @@
             foreach($returned_books as $book) {
                 $title = $book['title'];
                 $id = $book['id'];
-                $duedate = $book['duedate'];
-                $new_book = new Book($title, $duedate, $id);
+                $genre = $book['genre'];
+                $new_book = new Book($title, $genre, $id);
                 array_push($books, $new_book);
             }
             return $books;
@@ -104,10 +104,10 @@
             $this->setTitle($new_title);
         }
 
-        function updateDueDate($new_date)
+        function updateGenre($new_genre)
         {
-            $GLOBALS['DB']->exec("UPDATE books SET duedate = '{$new_date}' WHERE id = {$this->getId()};");
-            $this->setDueDate($new_date);
+            $GLOBALS['DB']->exec("UPDATE books SET genre = '{$new_genre}' WHERE id = {$this->getId()};");
+            $this->setGenre($new_genre);
         }
 
     }
