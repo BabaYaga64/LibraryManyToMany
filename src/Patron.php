@@ -64,6 +64,19 @@
             }
             return $patrons;
         }
+
+        static function deleteAll()
+        {
+            $GLOBALS['DB']->exec("DELETE FROM patrons *;");
+
+        }
+
+        //Deletes 1 patron
+        function deletePatron()
+        {
+            $GLOBALS['DB']->exec("DELETE FROM patrons WHERE id = {$this->getId()};");
+        }
+
     }
 
 
