@@ -31,9 +31,23 @@
     $app->post("/books", function() use($app) {
         $new_book = new Book($_POST['title'], $_POST['genre']);
         $new_book->save();
+
+        //need to add an if statement here so if author already exists,
+        //add that author's id for the book instead of creating a new author with
+        //the same name
+
+        // Author::findName($_POST['name']);
+
+        //check names. if name matches the entered name
+        //use that existing id
+
+
+        //this is in the else statement
         $new_author = new Author($_POST['name']);
         $new_author->save();
         $new_book->addAuthor($new_author);
+
+
         $new_book_id = $new_book->getId();
 
         $copy = $_POST['copy'];
@@ -104,14 +118,30 @@
     });
 
     //add author (don't need to add books on this page)
+    $app->post("/authors", function() use($app) {
+        $new_author = new Author($_POST['name']);
+        $new_author->save();
+        return $app['twig']->render('authors.twig', array('authors' => Author::getAll()));
+    });
 
-    //edit author (can add books to author on this page)
+    //show single author (can add books to author on this page)
+    $app->get("/authors/{id}", function($id) use($app) {
+        $current_author = Author::find($id);
+        return $app['twig']->render('an_author.twig', array('author' => $current_author));
+    });
+
+    //edit author
 
     //edit form for author sent as patch
 
     //delete a specific author
 
     //delete all authors
+    $app->post("/delete_authors", function() use ($app) {
+        Author::deleteAll();
+        return $app['twig']->render('authors.twig', array('authors' => Author::getAll()));
+    });
+
 
     return $app;
 

@@ -1,8 +1,36 @@
 <html>
     <head>
-        <title></title>
+        <title>Library: Authors</title>
+        <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css'>
     </head>
     <body>
+
+        <h3>Authors:</h3>
+        
+        <form action="/authors" method="post">
+            <label for="name">Author's name:</label>
+            <input type="text" name="name" id="name">
+
+            <button type="submit">Add author</button>
+        </form>
+
+        {% if authors is not empty %}
+         <p>Here are our authors:</p>
+         <ul>
+        {% for author in authors %}
+            <li><a href="/authors/{{ author.getId }}">{{ author.getName }}</a></li>
+        {% endfor %}
+
+            <form action="/delete_authors" method="post">
+                <button name="button">Delete authors</button>
+            </form>
+         </ul>
+         {% else %}
+            <p>No one has written anything.</p>
+         {% endif %}
+
+         <a href="/"><p>Home</p></a>
+         <a href="/books"><p>Books</p></a>
 
     </body>
 </html>

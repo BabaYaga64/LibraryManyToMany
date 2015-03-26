@@ -44,7 +44,19 @@
                     $found_author = $author;
                 }
             } return $found_author;
+        }
 
+        static function findName($search_name)
+        {
+            $found_author = null;
+            $authors = Author::getAll();
+            foreach($authors as $author) {
+                $author_name = $author->getName();
+                if ($author_name == $search_name) {
+                    $found_author = $author;
+                }
+            }
+            return $found_author;
         }
 
         function save()
