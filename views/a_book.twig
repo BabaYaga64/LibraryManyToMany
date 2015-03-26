@@ -10,9 +10,8 @@
             <li>Genre: {{ book.getGenre }}</li>
             <li># of copies: {{ copy }}
         </ul>
-            <form action="/books/{id}/edit" method="post">
+            <form action="/books/{{ book.getId }}/edit" method="get">
                 <button name="submit">Update</button>
-
             </form>
 
             <p>

@@ -38,14 +38,14 @@
 
         $copy = $_POST['copy'];
         for($i = 0; $i < $copy; $i++) {
-        $new_copy = new Copy($new_book_id);
-        $new_copy->save();
+            $new_copy = new Copy($new_book_id);
+            $new_copy->save();
         }
 
         return $app['twig']->render('books.twig', array('books' => Book::getAll(), 'authors' => Author::getAll(), 'copies' => Copy::getAll()));
     });
 
-    //show one book & all info
+    //show one book & all info (title, genre, author(s), copies)
     $app->get("/books/{id}", function($id) use($app) {
         $current_book = Book::find($id);
         $current_author = $current_book->getAuthors();
@@ -67,8 +67,21 @@
     $app->patch("/books/{id}", function($id) use ($app) {
         $current_book = Book::find($id);
         $new_title = $_POST['title'];
-        $current_book->update($new_title);
-        return $app['twig']->render('a_book.twig', array('book' => $current_book));
+        $current_book->updateTitle($new_title);
+
+        // $new_genre = $_POST['genre'];
+        // $current_book->updateGenre($new_genre);
+
+        // to change the genre & not the title / vice versa, need if statements
+        // if $_POST['genre'] = " " (unentered), use the original genre.
+        // otherwise indexes are undefined are when the edit is posted.
+
+        $current_author = $current_book->getAuthors();
+        $temp = $GLOBALS['DB']->query("SELECT * FROM copies WHERE book_id = {$id};");
+        $result = $temp->fetchAll(PDO::FETCH_ASSOC);
+        $count = count($result);
+
+        return $app['twig']->render('a_book.twig', array('book' => $current_book, 'author' => $current_author[0], 'copy' => $count));
         });
 
     //delete a specific book
@@ -83,8 +96,22 @@
         $app->post("/delete_books", function() use ($app) {
             Book::deleteAll();
             return $app['twig']->render('books.twig', array('books' => Book::getAll()));
-
         });
+
+    //show all authors
+    $app->get("/authors", function() use($app) {
+        return $app['twig']->render('authors.twig', array('authors' => Author::getAll()));
+    });
+
+    //add author (don't need to add books on this page)
+
+    //edit author (can add books to author on this page)
+
+    //edit form for author sent as patch
+
+    //delete a specific author
+
+    //delete all authors
 
     return $app;
 

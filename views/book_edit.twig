@@ -1,0 +1,33 @@
+<html>
+    <head>
+        <title>Edit a single book</title>
+        <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css'>
+    </head>
+    <body>
+        <h3>Update {{ book.getTitle }}</h3>
+
+        <form action="/books/{{ book.getId }}" method="post">
+            <input type="hidden" name="_method" value="patch">
+
+            <label for="title">New Title:</label>
+            <input type="text" name="title" id="title">
+
+            <button type="submit">Update title</button>
+        </form>
+
+        <!-- <form action="/books/{{ book.getId }}" method="post">
+            <input type="hidden" name="_method" value="patch">
+
+            <label for="genre">New Genre:</label>
+            <input type="text" name="genre" id="genre">
+
+            <button type="submit">Update genre</button>
+        </form> -->
+
+        <form action="/books{{ book.getId }}/delete" method="post">
+            <input type="hidden" name="_method" value="delete">
+            <button type="submit">Delete book</button>
+        </form>
+
+    </body>
+</html>
