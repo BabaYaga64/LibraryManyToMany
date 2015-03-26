@@ -5,7 +5,7 @@
         private $id;
         private $book_id;
 
-        function __construct($id = null, $book_id)
+        function __construct($book_id, $id = null)
         {
             $this->book_id = $book_id;
             $this->id = $id;
@@ -64,7 +64,7 @@
             foreach($returned_copies as $copy) {
                 $book_id = $copy['book_id'];
                 $id = $copy['id'];
-                $new_copy = new Copy($id, $book_id);
+                $new_copy = new Copy($book_id, $id);
                 array_push($copies, $new_copy);
             }
             return $copies;
@@ -112,6 +112,7 @@
             }
             return $patrons;
         }
+
 
     }
 

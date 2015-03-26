@@ -1,0 +1,23 @@
+<html>
+    <head>
+        <title>This is the one book page</title>
+        <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css'>
+    </head>
+    <body>
+        <h1>{{ book.getTitle}}</h1>
+        <ul>
+            <li>Author: {{ author.getName }}</li>
+            <li>Genre: {{ book.getGenre }}</li>
+            <li># of copies: {{ copy }}
+        </ul>
+            <form action="/books/{id}/edit" method="post">
+                <button name="submit">Update</button>
+
+            </form>
+
+            <p>
+                <a href="/books">Go Back</a>
+            </p>
+        </p>
+    </body>
+</html>

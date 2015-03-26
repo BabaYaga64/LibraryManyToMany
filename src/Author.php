@@ -5,7 +5,7 @@
         private $name;
         private $id;
 
-        function __construct($name, $id)
+        function __construct($name, $id = null)
         {
             $this->name = $name;
             $this->id = $id;
@@ -34,6 +34,19 @@
         }
 
     //DB FUNCTIONS
+        static function find($search_id)
+        {
+            $found_author = null;
+            $authors = Author::getAll();
+            foreach($authors as $author) {
+                $author_id = $author->getId();
+                if ($author_id == $search_id) {
+                    $found_author = $author;
+                }
+            } return $found_author;
+
+        }
+
         function save()
         {
             $statement = $GLOBALS['DB']->query("INSERT INTO authors (name) VALUES ('{$this->getName()}') RETURNING id;");

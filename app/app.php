@@ -27,20 +27,38 @@
     });
 
     //add a book form goes through this
+    //needs to create book, author, copies
     $app->post("/books", function() use($app) {
         $new_book = new Book($_POST['title'], $_POST['genre']);
         $new_book->save();
-        return $app['twig']->render('books.twig', array('books' => Book::getAll()));
+        $new_author = new Author($_POST['name']);
+        $new_author->save();
+        $new_book->addAuthor($new_author);
+        $new_book_id = $new_book->getId();
+
+        $copy = $_POST['copy'];
+        for($i = 0; $i < $copy; $i++) {
+        $new_copy = new Copy($new_book_id);
+        $new_copy->save();
+        }
+
+        return $app['twig']->render('books.twig', array('books' => Book::getAll(), 'authors' => Author::getAll(), 'copies' => Copy::getAll()));
     });
 
     //show one book & all info
     $app->get("/books/{id}", function($id) use($app) {
         $current_book = Book::find($id);
-        return $app['twig']->render('a_book.twig', array('book' => $current_book));
+        $current_author = $current_book->getAuthors();
+
+        $temp = $GLOBALS['DB']->query("SELECT * FROM copies WHERE book_id = {$id};");
+        $result = $temp->fetchAll(PDO::FETCH_ASSOC);
+        $count = count($result);
+
+        return $app['twig']->render('a_book.twig', array('book' => $current_book, 'author' => $current_author[0], 'copy' => $count));
     });
 
     //edit a single book
-    $app->get("/books/{id}/edit", function($id) use($app) {
+    $app->get("/books/{id}/edit", function($id) use ($app) {
         $current_book = Book::find($id);
         return $app['twig']->render('book_edit.twig', array('book' => $current_book));
     });

@@ -6,7 +6,7 @@
         private $genre;
         private $id;
 
-        function __construct($title, $genre, $id)
+        function __construct($title, $genre, $id = null)
         {
             $this->title = $title;
             $this->genre = $genre;
@@ -134,6 +134,22 @@
                 array_push($authors, $new_author);
             }
             return $authors;
+        }
+
+    //JOIN COPIES TO BOOKS
+        function getCopies()
+        {
+            $query = $GLOBALS['DB']->query("SELECT * FROM copies WHERE book_id = {$this->getId()};");
+            $copy_count = $query->fetchAll(PDO::FETCH_ASSOC);
+
+            $copies = array();
+            foreach ($copy_count as $copy) {
+                $book_id = $copy['book_id'];
+                $id = $copy['id'];
+                $new_copy = new Copy($book_id, $id);
+                array_push($copies, $new_copy);
+            }
+            return $copies;
         }
 
     }
