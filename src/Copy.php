@@ -5,7 +5,7 @@
         private $id;
         private $book_id;
 
-        function __construct($id, $book_id)
+        function __construct($id = null, $book_id)
         {
             $this->book_id = $book_id;
             $this->id = $id;
@@ -34,7 +34,7 @@
         function setBook_Id($new_book_id)
 
         {
-            $this->id = (int) $new_book_id;
+            $this->new_book_id = (int) $new_book_id;
         }
 
         //DB FUNCTIONS
