@@ -5,7 +5,7 @@
         private $pname;
         private $id;
 
-        function __construct($pname, $id)
+        function __construct($pname, $id = null)
         {
             $this->pname = $pname;
             $this->id = $id;
@@ -21,19 +21,19 @@
             return $this->id;
         }
 
-        function setPname()
+        function setPname($new_pname)
         {
-            $this->pname = (string) $pname;
+            $this->new_pname = (string) $new_pname;
         }
 
-        function setId()
+        function setId($new_id)
         {
-            $this->id = (int) $id;
+            $this->id = (int) $new_id;
         }
 
         function save()
         {
-            $statement = $GLOBALS['DB']->query("INSERT INTO patrons (name) VALUES ({$this->getName()}) RETURNING id;");
+            $statement = $GLOBALS['DB']->query("INSERT INTO patrons (p_name) VALUES ('{$this->getPname()}') RETURNING id;");
             $result = $statement->fetch(PDO::FETCH_ASSOC);
             $this->setId($result['id']);
         }
@@ -57,9 +57,9 @@
             $patrons = array();
 
             foreach($returned_patrons as $patron) {
-                $pname = $patron['pname'];
+                $pname = $patron['p_name'];
                 $id = $patron['id'];
-                $new_patron = new Patron($name, $id);
+                $new_patron = new Patron($pname, $id);
                 array_push($patrons, $new_patron);
             }
             return $patrons;
