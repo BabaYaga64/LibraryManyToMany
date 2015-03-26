@@ -87,7 +87,10 @@
         function getCopies()
         {
 
-            $query = $GLOBALS['DB']->query("SELECT copies.* FROM patrons JOIN checkouts ON (patrons.id = checkouts.patron_id) JOIN copies ON (checkouts.copy_id = copies.id) WHERE patrons.id = {$this->getId()};");
+            $query = $GLOBALS['DB']->query("SELECT copies.* FROM
+                    patrons JOIN checkouts ON (patrons.id = checkouts.patron_id)
+                            JOIN copies ON (checkouts.copy_id = copies.id)
+                            WHERE patrons.id = {$this->getId()};");
 
             $copy_ids = $query->fetchAll(PDO::FETCH_ASSOC);
 

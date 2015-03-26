@@ -11,7 +11,6 @@
             $this->id = $id;
         }
 
-
 //GETTERS
         function getId()
         {
@@ -24,7 +23,6 @@
         }
 
 //SETTERS
-
         function setId($new_id)
 
         {
@@ -37,8 +35,7 @@
             $this->new_book_id = (int) $new_book_id;
         }
 
-        //DB FUNCTIONS
-
+//DB FUNCTIONS
         function save()
         {
             $statement = $GLOBALS['DB']->query("INSERT INTO copies (book_id) VALUES ({$this->getBook_Id()}) RETURNING id;");
@@ -73,28 +70,48 @@
             return $copies;
         }
 
-        //DELETE FUNCTIONS
+//DELETE FUNCTIONS
+        static function deleteAll()
+        {
+            $GLOBALS['DB']->exec("DELETE FROM copies *;");
+        }
+        //Deletes 1 copy
+        function deleteCopy()
+        {
+            $GLOBALS['DB']->exec("DELETE FROM copies WHERE id = {$this->getId()};");
+        }
 
-            static function deleteAll()
-            {
-                $GLOBALS['DB']->exec("DELETE FROM copies *;");
+        //Deletes ALL copies of one book
+        function deleteBook()
+        {
+            $GLOBALS['DB']->exec("DELETE FROM copies WHERE book_id = {$this->getId()};");
+
+        }
+
+//JOIN PATRONS TO COPIES
+        function addPatron($patron)
+        {
+            $GLOBALS['DB']->exec("INSERT INTO checkouts (copy_id, patron_id) VALUES ({$this->getId()}, {$patron->getId()});");
+        }
+
+        function getPatrons()
+        {
+            $query = $GLOBALS['DB']->query("SELECT patrons.* FROM
+                    copies JOIN checkouts ON (copies.id = checkouts.copy_id)
+                           JOIN patrons ON (checkouts.patron_id = patrons.id)
+                           WHERE copies.id = {$this->getId()};");
+
+            $patron_ids = $query->fetchAll(PDO::FETCH_ASSOC);
+
+            $patrons = array();
+            foreach($patron_ids as $patron) {
+                $pname = $patron['p_name'];
+                $id = $patron['id'];
+                $new_patron = new Patron($pname, $id);
+                array_push($patrons, $new_patron);
             }
-            //Deletes 1 copy
-            function deleteCopy()
-            {
-                $GLOBALS['DB']->exec("DELETE FROM copies WHERE id = {$this->getId()};");
-            }
-
-            //Deletes ALL copies of one book
-            function deleteBook()
-            {
-                $GLOBALS['DB']->exec("DELETE FROM copies WHERE book_id = {$this->getId()};");
-
-            }
-
-
-
-
+            return $patrons;
+        }
 
     }
 

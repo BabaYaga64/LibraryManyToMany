@@ -72,7 +72,6 @@
             $book_id = $test_book->getId();
             $test_copy = new Copy($id, $book_id);
 
-
             //Act
             $test_copy->save();
             $result = Copy::getAll();
@@ -102,7 +101,6 @@
             $book_id2 = $test_book2->getId();
             $test_copy2 = new Copy($id2, $book_id2);
 
-
             //Act
             $test_copy->save();
             $test_copy2->save();
@@ -116,7 +114,6 @@
         function test_deleteAll()
         {
             //Arrange
-
             $title = "Hamlet";
             $genre = "Drama";
             $id = null;
@@ -136,6 +133,38 @@
 
             //Assert
             $this->assertEquals([], $result);
+        }
+
+        function test_getPatrons()
+        {
+            //Arrange
+            $title = "The dog who lost his way";
+            $genre = "tragedy";
+            $id = 1;
+            $test_book = new Book($title, $genre, $id);
+            $test_book->save();
+
+            $book_id = $test_book->getId();
+            $test_copy = new Copy($id, $book_id);
+            $test_copy->save();
+
+            $pname = "Billy";
+            $id2 = 2;
+            $test_patron = new Patron($pname, $id2);
+            $test_patron->save();
+
+            $pname2 = "Eric";
+            $id3 = 3;
+            $test_patron2 = new Patron($pname2, $id3);
+            $test_patron2->save();
+
+            //Act
+            $test_copy->addPatron($test_patron);
+            $test_copy->addPatron($test_patron2);
+
+            //Assert
+            $result = $test_copy->getPatrons();
+            $this->assertEquals([$test_patron, $test_patron2], $result);
         }
 
     }
