@@ -7,6 +7,7 @@
 
     require_once "src/Copy.php";
     require_once "src/Patron.php";
+    require_once "src/Book.php";
 
     $DB = new PDO('pgsql:host=localhost;dbname=library_test');
 
@@ -16,6 +17,7 @@
         {
             Patron::deleteAll();
             Copy::deleteAll();
+            Book::deleteAll();
         }
 
         function test_Pname()
@@ -127,5 +129,60 @@
         $this->assertEquals([], $result);
 
         }
+
+        function test_find()
+        {
+            //Arrange
+            $pname = "Billy Bob";
+            $id = 1;
+            $test_patron = new Patron($pname, $id);
+            $test_patron->save();
+
+            $pname2 = "Spokane";
+            $id2 = 2;
+            $test_patron2 = new Patron($pname, $id);
+            $test_patron2->save();
+
+            //Act
+            $result = Patron::find($test_patron->getId());
+
+            //Assert
+            $this->assertEquals($test_patron, $result);
+
+
+        }
+
+        function test_getCopies()
+        {
+            //Arrange
+            $pname = "Zoe";
+            $id = 1;
+            $test_patron = new Patron($pname, $id);
+            $test_patron->save();
+
+            $title = "Great Gatsby";
+            $genre = "American";
+            $test_book = new Book($title, $genre, $id);
+            $test_book->save();
+            $book_id = $test_book->getId();
+
+            $id2 = 2;
+            $test_copy = new Copy($id2, $book_id);
+            $test_copy->save();
+
+            $id3 = 3;
+            $test_copy2 = new Copy($id3, $book_id);
+            $test_copy2->save();
+
+            //Act
+            $test_patron->addCopy($test_copy);
+            $test_patron->addCopy($test_copy2);
+
+            //Assert
+            $result = $test_patron->getCopies();
+            $this->assertEquals([$test_copy, $test_copy2], $result);
+
+        }
+
     }
 ?>
